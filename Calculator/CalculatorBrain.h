@@ -27,8 +27,6 @@
 
 + (id)runProgram:(id)program;
 
-+ (id)runProgram:(id)program usingVariableValues:(NSDictionary *)variableValues;
-
 + (NSString *)descriptionOfProgram: (id)program;
 
 + (NSSet *)variablesUsedInProgram:(id)program;
