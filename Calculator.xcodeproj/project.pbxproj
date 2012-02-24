@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		B324338314F40615004ABC27 /* AxesDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = B324338214F40615004ABC27 /* AxesDrawer.m */; };
 		B324338714F40674004ABC27 /* GraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = B324338614F40674004ABC27 /* GraphView.m */; };
-		B324339314F40830004ABC27 /* GraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B324339214F40830004ABC27 /* GraphViewController.m */; };
+		B32B003A14F80B1700FE79E8 /* GraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B32B003914F80B1700FE79E8 /* GraphViewController.m */; };
 		B34DEEB0149A41D400E03256 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B34DEEAF149A41D400E03256 /* UIKit.framework */; };
 		B34DEEB2149A41D400E03256 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B34DEEB1149A41D400E03256 /* Foundation.framework */; };
 		B34DEEB4149A41D400E03256 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B34DEEB3149A41D400E03256 /* CoreGraphics.framework */; };
@@ -27,8 +27,8 @@
 		B324338214F40615004ABC27 /* AxesDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AxesDrawer.m; sourceTree = "<group>"; };
 		B324338514F40674004ABC27 /* GraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphView.h; sourceTree = "<group>"; };
 		B324338614F40674004ABC27 /* GraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphView.m; sourceTree = "<group>"; };
-		B324339114F40830004ABC27 /* GraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GraphViewController.h; path = ../GraphViewController.h; sourceTree = "<group>"; };
-		B324339214F40830004ABC27 /* GraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GraphViewController.m; path = ../GraphViewController.m; sourceTree = "<group>"; };
+		B32B003814F80B1700FE79E8 /* GraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphViewController.h; sourceTree = "<group>"; };
+		B32B003914F80B1700FE79E8 /* GraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphViewController.m; sourceTree = "<group>"; };
 		B34DEEAB149A41D400E03256 /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B34DEEAF149A41D400E03256 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B34DEEB1149A41D400E03256 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -92,6 +92,8 @@
 		B34DEEB5149A41D400E03256 /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				B32B003814F80B1700FE79E8 /* GraphViewController.h */,
+				B32B003914F80B1700FE79E8 /* GraphViewController.m */,
 				B324338114F40615004ABC27 /* AxesDrawer.h */,
 				B324338214F40615004ABC27 /* AxesDrawer.m */,
 				B34DEEBE149A41D400E03256 /* CalculatorAppDelegate.h */,
@@ -104,8 +106,6 @@
 				B34DEEC5149A41D400E03256 /* CalculatorViewController.m */,
 				B324338514F40674004ABC27 /* GraphView.h */,
 				B324338614F40674004ABC27 /* GraphView.m */,
-				B324339114F40830004ABC27 /* GraphViewController.h */,
-				B324339214F40830004ABC27 /* GraphViewController.m */,
 				B34DEEC1149A41D400E03256 /* MainStoryboard.storyboard */,
 				B34DEEB6149A41D400E03256 /* Supporting Files */,
 			);
@@ -192,7 +192,7 @@
 				B3888D1214E788A10054EF59 /* CalculatorVariable.m in Sources */,
 				B324338314F40615004ABC27 /* AxesDrawer.m in Sources */,
 				B324338714F40674004ABC27 /* GraphView.m in Sources */,
-				B324339314F40830004ABC27 /* GraphViewController.m in Sources */,
+				B32B003A14F80B1700FE79E8 /* GraphViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
