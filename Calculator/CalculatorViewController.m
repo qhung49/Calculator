@@ -8,6 +8,7 @@
 
 #import "CalculatorViewController.h"
 #import "CalculatorBrain.h"
+#import "GraphViewController.h"
 
 @interface CalculatorViewController ()
 @property (nonatomic) BOOL userInTheMiddleOfEnteringNumber;
@@ -22,7 +23,7 @@
 @synthesize display = _display;
 @synthesize displayAll = _displayAll;
 @synthesize equalSymbol = _equalSymbol;
-@synthesize displayVariables = _displayVariables;
+//@synthesize displayVariables = _displayVariables;
 @synthesize userInTheMiddleOfEnteringNumber = _userInTheMiddleOfEnteringNumber;
 @synthesize brain = _brain;
 @synthesize testVariableValues = _testVariableValues;
@@ -125,45 +126,45 @@
     [self updateInterfaceWithResult:@"0"];
 }
 
-- (void) updateDisplayVariables
-{
-    self.displayVariables.text = @"";
-    NSSet *variableSet = [CalculatorBrain variablesUsedInProgram:self.brain.program];
-    for (id variable in variableSet)
-    {
-        id value = [self.testVariableValues objectForKey:variable];
-        if (value && [value isKindOfClass:[NSNumber class]])
-        {
-            self.displayVariables.text = [self.displayVariables.text stringByAppendingFormat:@"%@ = %@ ",variable,value];
-        }
-    }
-    
-}
-- (IBAction)testPressed:(UIButton *)sender 
-{
-    if ([sender.currentTitle isEqualToString:@"Test nil"])
-        self.testVariableValues = nil;
-    else if ([sender.currentTitle isEqualToString:@"Test 1"])
-    {
-        self.testVariableValues = [NSDictionary dictionaryWithObjectsAndKeys:
-                                   [NSNumber numberWithDouble:1],@"x", 
-                                   [NSNumber numberWithDouble:2],@"y",
-                                   [NSNumber numberWithDouble:3],@"z",
-                                   nil];
-    }
-    else if ([sender.currentTitle isEqualToString:@"Test 2"])
-    {
-        self.testVariableValues = [NSDictionary dictionaryWithObjectsAndKeys:
-                                   [NSNumber numberWithDouble:-1],@"x", 
-                                   [NSNumber numberWithDouble:-2],@"y",
-                                   [NSNumber numberWithDouble:-3],@"z",
-                                   nil];
-    }
-
-    [self updateDisplayVariables];
-    id result = [CalculatorBrain runProgram:self.brain.program usingVariableValues:self.testVariableValues];
-    [self updateInterfaceWithResult:result];
-}
+//- (void) updateDisplayVariables
+//{
+//    self.displayVariables.text = @"";
+//    NSSet *variableSet = [CalculatorBrain variablesUsedInProgram:self.brain.program];
+//    for (id variable in variableSet)
+//    {
+//        id value = [self.testVariableValues objectForKey:variable];
+//        if (value && [value isKindOfClass:[NSNumber class]])
+//        {
+//            self.displayVariables.text = [self.displayVariables.text stringByAppendingFormat:@"%@ = %@ ",variable,value];
+//        }
+//    }
+//    
+//}
+//- (IBAction)testPressed:(UIButton *)sender 
+//{
+//    if ([sender.currentTitle isEqualToString:@"Test nil"])
+//        self.testVariableValues = nil;
+//    else if ([sender.currentTitle isEqualToString:@"Test 1"])
+//    {
+//        self.testVariableValues = [NSDictionary dictionaryWithObjectsAndKeys:
+//                                   [NSNumber numberWithDouble:1],@"x", 
+//                                   [NSNumber numberWithDouble:2],@"y",
+//                                   [NSNumber numberWithDouble:3],@"z",
+//                                   nil];
+//    }
+//    else if ([sender.currentTitle isEqualToString:@"Test 2"])
+//    {
+//        self.testVariableValues = [NSDictionary dictionaryWithObjectsAndKeys:
+//                                   [NSNumber numberWithDouble:-1],@"x", 
+//                                   [NSNumber numberWithDouble:-2],@"y",
+//                                   [NSNumber numberWithDouble:-3],@"z",
+//                                   nil];
+//    }
+//
+//    [self updateDisplayVariables];
+//    id result = [CalculatorBrain runProgram:self.brain.program usingVariableValues:self.testVariableValues];
+//    [self updateInterfaceWithResult:result];
+//}
 
 - (void) updateInterfaceWithResult:(id)result
 {
@@ -188,8 +189,15 @@
 - (void)viewDidUnload {
     [self setDisplayAll:nil];
     [self setEqualSymbol:nil];
-    [self setDisplayVariables:nil];
+    //[self setDisplayVariables:nil];
     [super viewDidUnload];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender 
+{
+    if ([segue.identifier isEqualToString:@"GraphSegue"]) {
+        [segue.destinationViewController setProgram:self.brain.program];
+    }
 }
 
 @end

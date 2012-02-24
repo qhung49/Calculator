@@ -16,6 +16,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *equalSymbol;
 
-@property (weak, nonatomic) IBOutlet UILabel *displayVariables;
+//@property (weak, nonatomic) IBOutlet UILabel *displayVariables;
 
 @end

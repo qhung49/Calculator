@@ -124,7 +124,7 @@
             if ([operation isEqualToString:@"+"])
                 result = [o1 doubleValue] + [o2 doubleValue];
             else if ([@"*" isEqualToString:operation])
-                result = [o1 doubleValue] + [o2 doubleValue];        
+                result = [o1 doubleValue] * [o2 doubleValue];        
             else if ([@"/" isEqualToString:operation])
             {
                 if ([o1 doubleValue]!=0) // avoid division by zero
