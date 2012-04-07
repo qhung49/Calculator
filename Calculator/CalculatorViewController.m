@@ -14,8 +14,10 @@
 @property (nonatomic) BOOL userInTheMiddleOfEnteringNumber;
 @property (nonatomic, strong) CalculatorBrain *brain;
 @property (nonatomic, strong) NSDictionary *testVariableValues;
+@property (nonatomic, weak) GraphViewController<SplitViewBarButtonItemPresenter> *detailController;
 
 - (void) updateInterfaceWithResult:(id)result;
+
 @end
 
 @implementation CalculatorViewController
@@ -27,7 +29,9 @@
 @synthesize userInTheMiddleOfEnteringNumber = _userInTheMiddleOfEnteringNumber;
 @synthesize brain = _brain;
 @synthesize testVariableValues = _testVariableValues;
+@synthesize detailController = _detailController;
 
+// Getters and Setters
 - (CalculatorBrain *) brain
 {
     if (!_brain)
@@ -35,6 +39,20 @@
     return _brain;
 }
 
+- (GraphViewController*) detailController
+{
+    if (!_detailController)
+    {
+        id detailVC = [self.splitViewController.viewControllers lastObject];
+        if (![detailVC isMemberOfClass:[GraphViewController class]]) {
+            detailVC = nil;
+        }
+        _detailController = detailVC;
+    }
+    return _detailController;
+}
+
+// Target Actions
 - (IBAction)variablePressed:(UIButton *)sender {
     self.equalSymbol.text = @"";
     NSString *variableName = sender.currentTitle;
@@ -126,6 +144,11 @@
     [self updateInterfaceWithResult:@"0"];
 }
 
+- (IBAction)graphPressed 
+{
+    [self.detailController setProgram:self.brain.program];
+}
+
 //- (void) updateDisplayVariables
 //{
 //    self.displayVariables.text = @"";
@@ -166,6 +189,7 @@
 //    [self updateInterfaceWithResult:result];
 //}
 
+// Private methods
 - (void) updateInterfaceWithResult:(id)result
 {
     if ([result isKindOfClass:[NSNumber class]])
@@ -185,6 +209,12 @@
     self.displayAll.text = [CalculatorBrain descriptionOfProgram:self.brain.program];
 }
 
+// UIViewController overridden methods
+- (void) awakeFromNib
+{
+    [super awakeFromNib];
+    self.splitViewController.delegate = self;
+}
 
 - (void)viewDidUnload {
     [self setDisplayAll:nil];
@@ -198,6 +228,36 @@
     if ([segue.identifier isEqualToString:@"GraphSegue"]) {
         [segue.destinationViewController setProgram:self.brain.program];
     }
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return YES;
+}
+
+// UISplitViewControllerDelegate protocol
+- (void) splitViewController:(UISplitViewController *)svc 
+      willHideViewController:(UIViewController *)aViewController 
+           withBarButtonItem:(UIBarButtonItem *)barButtonItem 
+        forPopoverController:(UIPopoverController *)pc 
+{
+    barButtonItem.title = @"Calculator";    
+    [self.detailController setSplitViewBarButtonItem:barButtonItem];
+}
+
+// Called when the view is shown again in the split view, invalidating the button and popover controller.
+- (void)splitViewController:(UISplitViewController *)svc 
+     willShowViewController:(UIViewController *)aViewController 
+  invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem 
+{
+    [self.detailController setSplitViewBarButtonItem:nil];
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)svc
+   shouldHideViewController:(UIViewController *)vc
+              inOrientation:(UIInterfaceOrientation)orientation
+{
+    return self.detailController ? UIInterfaceOrientationIsPortrait(orientation) : NO;
 }
 
 @end

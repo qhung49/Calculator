@@ -9,14 +9,23 @@
 #import "GraphView.h"
 #import "AxesDrawer.h"
 
+@interface GraphView()
+
+@property (nonatomic) CGSize oldBoundsSize;
+
+- (void) setup;
+
+@end
+
 @implementation GraphView
 
 @synthesize dataSource = _dataSource;
 @synthesize origin = _origin;
 @synthesize scale = _scale;
+@synthesize oldBoundsSize = _oldBoundsSize;
 
 #define DEFAULT_SCALE 0.9
-#define TEXT_MARGIN_IN_AXE 15
+#define TEXT_MARGIN_IN_AXE 50
 
 - (CGFloat)scale
 {
@@ -38,19 +47,23 @@
     [self setNeedsDisplay];
 }
 
+- (void) setup
+{
+    self.origin = CGPointMake(0.0+TEXT_MARGIN_IN_AXE, self.bounds.size.height-TEXT_MARGIN_IN_AXE);
+    self.scale = DEFAULT_SCALE;
+    self.oldBoundsSize = self.bounds.size;
+}
+
 - (void) awakeFromNib
 {
-    self.origin = CGPointMake(0.0, self.bounds.size.height-TEXT_MARGIN_IN_AXE);
-    self.scale = DEFAULT_SCALE;
+    [self setup];
 }
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
-        self.origin = CGPointMake(0.0, self.bounds.size.height-TEXT_MARGIN_IN_AXE);
-        self.scale = DEFAULT_SCALE;
+        [self setup];
     }
     return self;
 }
@@ -84,6 +97,11 @@
 
 - (void)drawRect:(CGRect)rect
 {
+    if (self.oldBoundsSize.height != self.bounds.size.height) {
+        _origin.y = self.bounds.size.height-TEXT_MARGIN_IN_AXE;
+        self.oldBoundsSize = self.bounds.size;
+    }
+    
     [AxesDrawer drawAxesInRect:self.bounds originAtPoint:self.origin scale:1/self.scale];
     
     CGContextRef context = UIGraphicsGetCurrentContext();

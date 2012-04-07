@@ -8,14 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CalculatorViewController : UIViewController
+@interface CalculatorViewController : UIViewController <UISplitViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *display;
 
 @property (weak, nonatomic) IBOutlet UILabel *displayAll;
 
 @property (weak, nonatomic) IBOutlet UILabel *equalSymbol;
-
-//@property (weak, nonatomic) IBOutlet UILabel *displayVariables;
 
 @end

@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SplitViewBarButtonItemPresenter.h"
 
-@interface GraphViewController : UIViewController
-
-@property (weak, nonatomic) IBOutlet UILabel *displayProgram;
+@interface GraphViewController : UIViewController <SplitViewBarButtonItemPresenter>
 
 @property (nonatomic,strong) id program; //model here
 

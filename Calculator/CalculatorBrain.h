@@ -31,6 +31,8 @@
 
 + (NSString *)descriptionOfProgram: (id)program;
 
++ (NSString *)descriptionOfLastProgram: (id)program;
+
 + (NSSet *)variablesUsedInProgram:(id)program;
 
 @end

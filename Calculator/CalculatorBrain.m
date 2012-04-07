@@ -259,4 +259,15 @@
     return result;
 }
 
++ (NSString *) descriptionOfLastProgram:(id)program
+{
+    NSString *result = @"";
+    NSMutableArray *stack;
+    if ([program isKindOfClass:[NSArray class]])
+    {
+        stack = [program mutableCopy];
+    }
+    return [result stringByAppendingString:[self descriptionOfTopOfStack:stack]];
+}
+
 @end

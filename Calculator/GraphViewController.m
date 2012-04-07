@@ -14,18 +14,29 @@
 
 @property (nonatomic,weak) IBOutlet GraphView *graphView;
 
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *programDescription;
+
+- (void)handleSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem;
+
 @end
 
 @implementation GraphViewController
 
-@synthesize displayProgram = _displayProgram;
 @synthesize program = _program;
 @synthesize graphView = _graphView;
+@synthesize toolbar = _toolbar;
+@synthesize programDescription = _programDescription;
+@synthesize splitViewBarButtonItem = _splitViewBarButtonItem;
 
+// Getters and seters
 - (void) setProgram:(id)program
 {
      _program = program;
     [self.graphView setNeedsDisplay];
+    self.title = [CalculatorBrain descriptionOfLastProgram:self.program];
+    self.programDescription.title = self.title;
 }
 
 - (void) setGraphView:(GraphView *)graphView
@@ -42,15 +53,25 @@
     self.graphView.dataSource = self;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (void) setSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem
 {
-    // Return YES for supported orientations
-    return YES;
+    if (_splitViewBarButtonItem != splitViewBarButtonItem)
+        [self handleSplitViewBarButtonItem:splitViewBarButtonItem];
 }
 
+// SplitViewBarButtonItemPresenter protocol
+- (void) handleSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem
+{
+    NSMutableArray *toolbarItems = [self.toolbar.items mutableCopy];
+    if (_splitViewBarButtonItem) [toolbarItems removeObject:_splitViewBarButtonItem];
+    if (splitViewBarButtonItem) [toolbarItems insertObject:splitViewBarButtonItem atIndex:0];
+    self.toolbar.items = toolbarItems;
+    _splitViewBarButtonItem = splitViewBarButtonItem;
+}
+
+// GraphViewDataSource protocol
 - (double) yCoordinateWithX:(double)x
 {
-    self.displayProgram.text = [CalculatorBrain descriptionOfProgram:self.program];
     NSDictionary *values = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:x],@"x",nil];
     id y = [CalculatorBrain runProgram:self.program usingVariableValues:values];
     if ([y isKindOfClass:[NSNumber class]])
@@ -61,8 +82,22 @@
         return 0;
 }
 
+// UINavigationController overridden methods
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return YES;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self handleSplitViewBarButtonItem:self.splitViewBarButtonItem];
+}
+
 - (void)viewDidUnload {
-    [self setDisplayProgram:nil];
+    [self setToolbar:nil];
+    [self setProgramDescription:nil];
+    [self setSplitViewBarButtonItem:nil];
     [super viewDidUnload];
 }
 
