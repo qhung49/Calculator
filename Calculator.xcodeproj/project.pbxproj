@@ -46,7 +46,6 @@
 		B34DEECC149A50DD00E03256 /* CalculatorBrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalculatorBrain.h; sourceTree = "<group>"; };
 		B34DEECD149A50DD00E03256 /* CalculatorBrain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalculatorBrain.m; sourceTree = "<group>"; };
 		B359442D152F575300336B14 /* iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPad.storyboard; sourceTree = "<group>"; };
-		B3594436152FEAA100336B14 /* SplitViewBarButtonItemPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplitViewBarButtonItemPresenter.h; sourceTree = "<group>"; };
 		B3888D1014E788A10054EF59 /* CalculatorVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalculatorVariable.h; sourceTree = "<group>"; };
 		B3888D1114E788A10054EF59 /* CalculatorVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalculatorVariable.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -101,7 +100,6 @@
 				B32B003914F80B1700FE79E8 /* GraphViewController.m */,
 				B34DEEC4149A41D400E03256 /* CalculatorViewController.h */,
 				B34DEEC5149A41D400E03256 /* CalculatorViewController.m */,
-				B3594436152FEAA100336B14 /* SplitViewBarButtonItemPresenter.h */,
 				B324338114F40615004ABC27 /* AxesDrawer.h */,
 				B324338214F40615004ABC27 /* AxesDrawer.m */,
 				B34DEECC149A50DD00E03256 /* CalculatorBrain.h */,

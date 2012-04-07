@@ -37,6 +37,8 @@
     if (scale != _scale)
     {
         _scale = scale;
+        [[NSUserDefaults standardUserDefaults] setDouble:scale forKey:@"scale"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         [self setNeedsDisplay];
     }
 }
@@ -44,13 +46,26 @@
 - (void) setOrigin:(CGPoint)origin 
 {
     _origin = origin;
+    NSArray *savedOrigin = [NSArray arrayWithObjects:[NSNumber numberWithDouble:_origin.x], [NSNumber numberWithDouble:_origin.y], nil];
+    [[NSUserDefaults standardUserDefaults] setObject:savedOrigin forKey:@"origin"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self setNeedsDisplay];
 }
 
 - (void) setup
 {
-    self.origin = CGPointMake(0.0+TEXT_MARGIN_IN_AXE, self.bounds.size.height-TEXT_MARGIN_IN_AXE);
-    self.scale = DEFAULT_SCALE;
+    NSArray *savedOrigin = [[NSUserDefaults standardUserDefaults] arrayForKey:@"origin"];
+    if (savedOrigin)
+    {
+        self.origin = CGPointMake([[savedOrigin objectAtIndex:0] floatValue],
+                                  [[savedOrigin objectAtIndex:1] floatValue]);
+    }
+    else {
+        self.origin = CGPointMake(0.0+TEXT_MARGIN_IN_AXE, self.bounds.size.height-TEXT_MARGIN_IN_AXE);
+    }
+    
+    double savedScale = [[NSUserDefaults standardUserDefaults] doubleForKey:@"scale"];
+    self.scale = (savedScale) ?  savedScale : DEFAULT_SCALE;
     self.oldBoundsSize = self.bounds.size;
 }
 

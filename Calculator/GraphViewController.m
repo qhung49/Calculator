@@ -13,10 +13,10 @@
 @interface GraphViewController() <GraphViewDataSource>
 
 @property (nonatomic,weak) IBOutlet GraphView *graphView;
-
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
-
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *programDescription;
+@property (nonatomic, strong) UIBarButtonItem *splitViewBarButtonItem;
+
 
 - (void)handleSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem;
 
@@ -82,10 +82,42 @@
         return 0;
 }
 
+// UISplitViewControllerDelegate protocol
+- (void) splitViewController:(UISplitViewController *)svc 
+      willHideViewController:(UIViewController *)aViewController 
+           withBarButtonItem:(UIBarButtonItem *)barButtonItem 
+        forPopoverController:(UIPopoverController *)pc 
+{
+    barButtonItem.title = @"Calculator";    
+    self.splitViewBarButtonItem = barButtonItem;
+}
+
+- (void)splitViewController:(UISplitViewController *)svc 
+     willShowViewController:(UIViewController *)aViewController 
+  invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem 
+{
+    self.splitViewBarButtonItem = nil;
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)svc
+   shouldHideViewController:(UIViewController *)vc
+              inOrientation:(UIInterfaceOrientation)orientation
+{
+    return UIInterfaceOrientationIsPortrait(orientation);
+}
+
 // UINavigationController overridden methods
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
+}
+
+- (void) awakeFromNib
+{
+    [super awakeFromNib];
+    self.splitViewController.delegate = self;
+    // prevents slide to right opening master controller (iOS 5.1)
+    self.splitViewController.presentsWithGesture = NO;
 }
 
 - (void)viewDidLoad

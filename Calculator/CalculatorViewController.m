@@ -14,7 +14,6 @@
 @property (nonatomic) BOOL userInTheMiddleOfEnteringNumber;
 @property (nonatomic, strong) CalculatorBrain *brain;
 @property (nonatomic, strong) NSDictionary *testVariableValues;
-@property (nonatomic, weak) GraphViewController<SplitViewBarButtonItemPresenter> *detailController;
 
 - (void) updateInterfaceWithResult:(id)result;
 
@@ -29,7 +28,6 @@
 @synthesize userInTheMiddleOfEnteringNumber = _userInTheMiddleOfEnteringNumber;
 @synthesize brain = _brain;
 @synthesize testVariableValues = _testVariableValues;
-@synthesize detailController = _detailController;
 
 // Getters and Setters
 - (CalculatorBrain *) brain
@@ -37,19 +35,6 @@
     if (!_brain)
         _brain = [[CalculatorBrain alloc] init];
     return _brain;
-}
-
-- (GraphViewController*) detailController
-{
-    if (!_detailController)
-    {
-        id detailVC = [self.splitViewController.viewControllers lastObject];
-        if (![detailVC isMemberOfClass:[GraphViewController class]]) {
-            detailVC = nil;
-        }
-        _detailController = detailVC;
-    }
-    return _detailController;
 }
 
 // Target Actions
@@ -146,7 +131,7 @@
 
 - (IBAction)graphPressed 
 {
-    [self.detailController setProgram:self.brain.program];
+    [[self.splitViewController.viewControllers lastObject] setProgram:self.brain.program];
 }
 
 //- (void) updateDisplayVariables
@@ -210,12 +195,6 @@
 }
 
 // UIViewController overridden methods
-- (void) awakeFromNib
-{
-    [super awakeFromNib];
-    self.splitViewController.delegate = self;
-}
-
 - (void)viewDidUnload {
     [self setDisplayAll:nil];
     [self setEqualSymbol:nil];
@@ -233,31 +212,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
-}
-
-// UISplitViewControllerDelegate protocol
-- (void) splitViewController:(UISplitViewController *)svc 
-      willHideViewController:(UIViewController *)aViewController 
-           withBarButtonItem:(UIBarButtonItem *)barButtonItem 
-        forPopoverController:(UIPopoverController *)pc 
-{
-    barButtonItem.title = @"Calculator";    
-    [self.detailController setSplitViewBarButtonItem:barButtonItem];
-}
-
-// Called when the view is shown again in the split view, invalidating the button and popover controller.
-- (void)splitViewController:(UISplitViewController *)svc 
-     willShowViewController:(UIViewController *)aViewController 
-  invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem 
-{
-    [self.detailController setSplitViewBarButtonItem:nil];
-}
-
-- (BOOL)splitViewController:(UISplitViewController *)svc
-   shouldHideViewController:(UIViewController *)vc
-              inOrientation:(UIInterfaceOrientation)orientation
-{
-    return self.detailController ? UIInterfaceOrientationIsPortrait(orientation) : NO;
 }
 
 @end
