@@ -124,8 +124,8 @@
     //[[UIColor blueColor] setStroke];
     UIGraphicsPushContext(context);
     CGContextBeginPath(context);
-    CGContextMoveToPoint(context, self.origin.x, self.origin.y);
-    for (CGFloat x=self.origin.x;x<self.bounds.size.width;x += 1/[self contentScaleFactor])
+    CGContextMoveToPoint(context, 0, self.origin.y);
+    for (CGFloat x=0;x<self.bounds.size.width;x += 1/[self contentScaleFactor])
     {
         double xProgram = (x-self.origin.x)*[self contentScaleFactor]*self.scale;
         double yProgram = [self.dataSource yCoordinateWithX:xProgram];

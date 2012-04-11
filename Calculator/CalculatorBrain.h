@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CalculatorVariable.h"
 
 @interface CalculatorBrain : NSObject
 
@@ -23,6 +22,7 @@
 
 - (void) popTopItemOffStack;
 
+// program is always guaranteed to be a Property List
 @property(nonatomic, readonly) id program;
 
 + (id)runProgram:(id)program;

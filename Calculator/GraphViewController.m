@@ -9,8 +9,9 @@
 #import "GraphViewController.h"
 #import "CalculatorBrain.h"
 #import "GraphView.h"
+#import "ProgramTableViewController.h"
 
-@interface GraphViewController() <GraphViewDataSource>
+@interface GraphViewController() <GraphViewDataSource,ProgramTableViewControllerDelegate>
 
 @property (nonatomic,weak) IBOutlet GraphView *graphView;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
@@ -57,6 +58,16 @@
 {
     if (_splitViewBarButtonItem != splitViewBarButtonItem)
         [self handleSplitViewBarButtonItem:splitViewBarButtonItem];
+}
+
+// Target Actions
+- (IBAction)addToFavorites:(UIButton *)sender 
+{
+    NSMutableArray* favorites = [[[NSUserDefaults standardUserDefaults] objectForKey:@"Favorites"] mutableCopy];
+    if (!favorites) favorites = [NSMutableArray array];
+    [favorites addObject: self.program];
+    [[NSUserDefaults standardUserDefaults] setObject:favorites forKey:@"Favorites"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 // SplitViewBarButtonItemPresenter protocol
@@ -107,6 +118,16 @@
 }
 
 // UINavigationController overridden methods
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"Show Favorites"])
+    {
+        NSArray* programs = [[NSUserDefaults standardUserDefaults] objectForKey:@"Favorites"];
+        [segue.destinationViewController setPrograms :programs];
+        [segue.destinationViewController setDelegate:self];
+    }
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
@@ -131,6 +152,11 @@
     [self setProgramDescription:nil];
     [self setSplitViewBarButtonItem:nil];
     [super viewDidUnload];
+}
+
+- (void)programTableViewController:(ProgramTableViewController *)sender choseProgram:(id)program
+{
+    self.program = program;
 }
 
 @end

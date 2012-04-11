@@ -35,8 +35,7 @@
 
 - (void) pushVariable:(NSString *)variableName
 {
-    CalculatorVariable *variable = [[CalculatorVariable alloc] init];
-    variable.name = [variableName copy];
+    NSString* variable = [variableName copy];
     [self.programStack addObject:variable];
 }
 
@@ -64,10 +63,22 @@
     if ([program isKindOfClass:[NSArray class]])
     {
         for (id item in program)
-            if ([item isKindOfClass:[CalculatorVariable class]])
-                [result addObject:[item description]];
+            if ([item isKindOfClass:[NSString class]])
+            {
+                if ([[self class] isVariable:(NSString*)item])
+                {
+                    [result addObject:[item description]];
+                }
+            }
     }
     return result;
+}
+
++ (BOOL) isVariable: (NSString *)operation
+{
+    return  ![self isMultiOOperation:operation] &&
+            ![self isSingleOOperation:operation] &&
+            ![self isNoOOperation:operation];
 }
 
 + (BOOL) isMultiOOperation: (NSString *)operation
@@ -187,10 +198,11 @@
         stack = [program mutableCopy];
     }
     for (int i=0; i<[stack count]; i++)
-        if ([[stack objectAtIndex:i] isKindOfClass:[CalculatorVariable class]])
+        if ([[stack objectAtIndex:i] isKindOfClass:[NSString class]] &&
+            [[self class] isVariable:[stack objectAtIndex:i]])
         {
-            CalculatorVariable *variable = (CalculatorVariable *) [stack objectAtIndex:i];
-            id value = [variableValues objectForKey:variable.name];
+            NSString* variable = (NSString*) [stack objectAtIndex:i];
+            id value = [variableValues objectForKey:variable];
             if ([value isKindOfClass:[NSNumber class]])
                 [stack replaceObjectAtIndex:i withObject:value];
             else
@@ -232,10 +244,9 @@
                         operation, 
                         temp];
         }
-    }
-    else if ([topOfStack isKindOfClass:[CalculatorVariable class]])
-    {
-        result = [topOfStack description];
+        else if ([self isVariable:operation]) {
+            result = [topOfStack description];
+        }
     }
     
     return result;
