@@ -14,6 +14,7 @@
 
 @optional
 - (void) programTableViewController:(ProgramTableViewController*)sender choseProgram:(id)program;
+- (void) programTableViewController:(ProgramTableViewController*)sender deletedProgram:(id)program;
 
 @end
 

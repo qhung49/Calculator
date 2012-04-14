@@ -18,6 +18,12 @@
 @synthesize programs = _programs;
 @synthesize delegate = _delegate;
 
+- (void)setPrograms:(NSArray *)programs
+{
+    _programs = programs;
+    [self.tableView reloadData];
+}
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -74,28 +80,26 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
+// don't allow deletion if the delegate does not support it too!
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    return YES;
+    return [self.delegate respondsToSelector:@selector(programTableViewController:deletedProgram:)];
 }
-*/
 
-/*
-// Override to support editing the table view.
+//support deletion simply by delegating deletion
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        id program = [self.programs objectAtIndex:indexPath.row];
+        [self.delegate programTableViewController:self deletedProgram:program];
+        //[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
 
 /*
 // Override to support rearranging the table view.

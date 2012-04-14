@@ -17,7 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *programDescription;
 @property (nonatomic, strong) UIBarButtonItem *splitViewBarButtonItem;
-
+@property (nonatomic, strong) UIPopoverController* popover;
 
 - (void)handleSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem;
 
@@ -30,6 +30,7 @@
 @synthesize toolbar = _toolbar;
 @synthesize programDescription = _programDescription;
 @synthesize splitViewBarButtonItem = _splitViewBarButtonItem;
+@synthesize popover = _popover;
 
 // Getters and seters
 - (void) setProgram:(id)program
@@ -122,6 +123,12 @@
 {
     if ([segue.identifier isEqualToString:@"Show Favorites"])
     {
+        if ([segue isKindOfClass:[UIStoryboardPopoverSegue class]]) {
+            UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
+            [self.popover dismissPopoverAnimated:YES];
+            self.popover = popoverSegue.popoverController; // might want to be popover's delegate and self.popoverController = nil on dismiss?
+        }
+
         NSArray* programs = [[NSUserDefaults standardUserDefaults] objectForKey:@"Favorites"];
         [segue.destinationViewController setPrograms :programs];
         [segue.destinationViewController setDelegate:self];
@@ -157,6 +164,27 @@
 - (void)programTableViewController:(ProgramTableViewController *)sender choseProgram:(id)program
 {
     self.program = program;
+    [self.navigationController popViewControllerAnimated:YES]; // support iPhone
+}
+
+- (void)programTableViewController:(ProgramTableViewController *)sender deletedProgram:(id)program
+{
+    // delete from standardDefaults
+    NSString* deletedProgramDescription = [CalculatorBrain descriptionOfLastProgram:program];
+    NSMutableArray* favorites = [NSMutableArray array];
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    for (id program in [defaults objectForKey:@"Favorites"])
+    {
+        if (![[CalculatorBrain descriptionOfLastProgram:program] isEqualToString:deletedProgramDescription])
+        {
+            [favorites addObject:program];
+        }
+    }
+    [defaults setObject:favorites forKey:@"Favorites"];
+    [defaults synchronize];
+    
+    // reset the Model
+    sender.programs = favorites;
 }
 
 @end
